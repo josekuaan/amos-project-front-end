@@ -2,24 +2,24 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer id="footer" class="footer">
-      <div class="container">
-        <div class="hm-footer-copyright text-center">
-          <div class="footer-social">
+    <footer id="footer" className="footer">
+      <div className="container">
+        <div className="hm-footer-copyright text-center">
+          <div className="footer-social">
             <a href="#">
-              <i class="fa fa-facebook"></i>
+              <i className="fa fa-facebook"></i>
             </a>
             <a href="#">
-              <i class="fa fa-instagram"></i>
+              <i className="fa fa-instagram"></i>
             </a>
             <a href="#">
-              <i class="fa fa-linkedin"></i>
+              <i className="fa fa-linkedin"></i>
             </a>
             <a href="#">
-              <i class="fa fa-pinterest"></i>
+              <i className="fa fa-pinterest"></i>
             </a>
             <a href="#">
-              <i class="fa fa-behance"></i>
+              <i className="fa fa-behance"></i>
             </a>
           </div>
           <p>
@@ -30,9 +30,9 @@ export default function Footer() {
       </div>
 
       <div id="scroll-Top">
-        <div class="return-to-top">
+        <div className="return-to-top">
           <i
-            class="fa fa-angle-up "
+            className="fa fa-angle-up "
             id="scroll-top"
             data-toggle="tooltip"
             data-placement="top"

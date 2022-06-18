@@ -212,6 +212,7 @@ ul.cart-list > li:last-child{border-bottom: 0;}
     font-size: 12px;
     font-weight: 300;
     line-height: 1.8;
+    
 }
 ul.cart-list > li .price {font-weight: 300;}
 .cart-close {
@@ -240,14 +241,15 @@ ul.cart-list > li.total {
     align-items: center;
     background: #e99c2e;
     border: 1px solid #e99c2e;
-    width: 80px;
-    height: 30px;
+    /* width: 140px;
+    height: 30px; */
     white-space: nowrap;
     color: #fff;
     font-size: 12px;
     font-weight: 500;
     text-transform: capitalize;
     border-radius: 3px;
+    padding: 10px 30px!important;
 }
 /*.cart-list*/
 
@@ -630,8 +632,8 @@ p.arrival-review span {margin-right: 15px;}
     background-position: center;
     background-size: cover;
 }
-.sofa-collection.collectionbg1{background: url(../images/sofa-collection-banner.jpg)no-repeat;}
-.sofa-collection.collectionbg2{background: url(../images/table-banner.jpg)no-repeat;}
+.sofa-collection.collectionbg1{background: url(../images/sofa-collection-banner.jpg),no-repeat;}
+.sofa-collection.collectionbg2{background: url(../images/table-banner.jpg),no-repeat;}
 
 .sofa-collection:before,.sofa-collection:after {
     position: absolute;
@@ -938,7 +940,25 @@ span.feature-review {margin-left: 10px;}
   .single-new-arrival-bg >.sale.bg-1:nth-child(2) {
     background: #47d93c;
   }
-  /* .sale.bg-1:nth-child(3) {
-    display: none;
-  } */
+  .list-group{
+display: flex;
+justify-content: space-between;
+padding: 0px 54px!important;
+margin-bottom: 0px!important;
+  }
+.cart-list-txt >h6{
+    margin-top:16px;
+}
+.checkout{
+    width: 46%;
+    padding: 10px 54px!important;
+    cursor: pointer;
+}
+ .delete{
+    cursor: pointer;
+}
+.image-display{
+    max-width:50%
+}
+  
 /*========================Thank you=================

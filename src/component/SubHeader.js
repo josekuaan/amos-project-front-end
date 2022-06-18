@@ -2,13 +2,13 @@ import React from "react";
 
 export default function SubHeader() {
   return (
-    <section id="populer-products" class="populer-products">
-      <div class="container">
-        <div class="populer-products-content">
-          <div class="row">
-            <div class="col-md-3">
-              <div class="single-populer-products">
-                <div class="single-populer-product-img mt40">
+    <section id="populer-products" className="populer-products">
+      <div className="container">
+        <div className="populer-products-content">
+          <div className="row">
+            <div className="col-md-3">
+              <div className="single-populer-products">
+                <div className="single-populer-product-img mt40">
                   <img
                     src="assets/images/p1.png"
                     alt="populer-products images"
@@ -17,7 +17,7 @@ export default function SubHeader() {
                 <h2>
                   <a href="#">arm chair</a>
                 </h2>
-                <div class="single-populer-products-para">
+                <div className="single-populer-products-para">
                   <p>
                     Nemo enim ipsam voluptatem quia volu ptas sit asperna aut
                     odit aut fugit.
@@ -25,20 +25,20 @@ export default function SubHeader() {
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="single-populer-products">
-                <div class="single-inner-populer-products">
-                  <div class="row">
-                    <div class="col-md-4 col-sm-12">
-                      <div class="single-inner-populer-product-img">
+            <div className="col-md-6">
+              <div className="single-populer-products">
+                <div className="single-inner-populer-products">
+                  <div className="row">
+                    <div className="col-md-4 col-sm-12">
+                      <div className="single-inner-populer-product-img">
                         <img
                           src="assets/images/p2.png"
                           alt="populer-products images"
                         />
                       </div>
                     </div>
-                    <div class="col-md-8 col-sm-12">
-                      <div class="single-inner-populer-product-txt">
+                    <div className="col-md-8 col-sm-12">
+                      <div className="single-inner-populer-product-txt">
                         <h2>
                           <a href="#">
                             latest designed stool <span>and</span> chair
@@ -49,14 +49,14 @@ export default function SubHeader() {
                           voluptatem accusantium doloret mque laudantium, totam
                           rem aperiam.
                         </p>
-                        <div class="populer-products-price">
+                        <div className="populer-products-price">
                           <h4>
                             Sales Start from <span>$99.00</span>
                           </h4>
                         </div>
                         <button
-                          class="btn-cart welcome-add-cart populer-products-btn"
-                          onclick="window.location.href='#'"
+                          className="btn-cart welcome-add-cart populer-products-btn"
+                          onClick={() => {}}
                         >
                           discover more
                         </button>
@@ -66,10 +66,10 @@ export default function SubHeader() {
                 </div>
               </div>
             </div>
-            <div class="col-md-3">
-              <div class="single-populer-products">
-                <div class="single-populer-products">
-                  <div class="single-populer-product-img">
+            <div className="col-md-3">
+              <div className="single-populer-products">
+                <div className="single-populer-products">
+                  <div className="single-populer-product-img">
                     <img
                       src="assets/images/p3.png"
                       alt="populer-products images"
@@ -78,7 +78,7 @@ export default function SubHeader() {
                   <h2>
                     <a href="#">hanging lamp</a>
                   </h2>
-                  <div class="single-populer-products-para">
+                  <div className="single-populer-products-para">
                     <p>
                       Nemo enim ipsam voluptatem quia volu ptas sit asperna aut
                       odit aut fugit.

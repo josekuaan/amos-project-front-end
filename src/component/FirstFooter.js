@@ -3,47 +3,47 @@ import React from "react";
 export default function FirstFooter() {
   return (
     <>
-      <section id="clients" class="clients">
-        <div class="container">
-          <div class="owl-carousel owl-theme" id="client">
-            <div class="item">
+      <section id="clients" className="clients">
+        <div className="container">
+          <div className="owl-carousel owl-theme" id="client">
+            <div className="item">
               <a href="#">
-                <img src="assets/images/c1.png" alt="brand-image" />
+                <img src="assets/images/c1.png" alt="brand" />
               </a>
             </div>
-            <div class="item">
+            <div className="item">
               <a href="#">
-                <img src="assets/images/c2.png" alt="brand-image" />
+                <img src="assets/images/c2.png" alt="brand" />
               </a>
             </div>
-            <div class="item">
+            <div className="item">
               <a href="#">
                 <img src="assets/images/c3.png" alt="brand-image" />
               </a>
             </div>
-            <div class="item">
+            <div className="item">
               <a href="#">
-                <img src="assets/images/c4.png" alt="brand-image" />
+                <img src="assets/images/c4.png" alt="brand" />
               </a>
             </div>
-            <div class="item">
+            <div className="item">
               <a href="#">
-                <img src="assets/images/c5.png" alt="brand-image" />
+                <img src="assets/images/c5.png" alt="brand" />
               </a>
             </div>
           </div>
         </div>
       </section>
-      <section id="newsletter" class="newsletter">
-        <div class="container">
-          <div class="hm-footer-details">
-            <div class="row">
-              <div class=" col-md-3 col-sm-6 col-xs-12">
-                <div class="hm-footer-widget">
-                  <div class="hm-foot-title">
+      <section id="newsletter" className="newsletter">
+        <div className="container">
+          <div className="hm-footer-details">
+            <div className="row">
+              <div className=" col-md-3 col-sm-6 col-xs-12">
+                <div className="hm-footer-widget">
+                  <div className="hm-foot-title">
                     <h4>information</h4>
                   </div>
-                  <div class="hm-foot-menu">
+                  <div className="hm-foot-menu">
                     <ul>
                       <li>
                         <a href="#">about us</a>
@@ -61,12 +61,12 @@ export default function FirstFooter() {
                   </div>
                 </div>
               </div>
-              <div class=" col-md-3 col-sm-6 col-xs-12">
-                <div class="hm-footer-widget">
-                  <div class="hm-foot-title">
+              <div className=" col-md-3 col-sm-6 col-xs-12">
+                <div className="hm-footer-widget">
+                  <div className="hm-foot-title">
                     <h4>collections</h4>
                   </div>
-                  <div class="hm-foot-menu">
+                  <div className="hm-foot-menu">
                     <ul>
                       <li>
                         <a href="#">wooden chair</a>
@@ -87,12 +87,12 @@ export default function FirstFooter() {
                   </div>
                 </div>
               </div>
-              <div class=" col-md-3 col-sm-6 col-xs-12">
-                <div class="hm-footer-widget">
-                  <div class="hm-foot-title">
+              <div className=" col-md-3 col-sm-6 col-xs-12">
+                <div className="hm-footer-widget">
+                  <div className="hm-foot-title">
                     <h4>my accounts</h4>
                   </div>
-                  <div class="hm-foot-menu">
+                  <div className="hm-foot-menu">
                     <ul>
                       <li>
                         <a href="#">my account</a>
@@ -113,25 +113,25 @@ export default function FirstFooter() {
                   </div>
                 </div>
               </div>
-              <div class=" col-md-3 col-sm-6  col-xs-12">
-                <div class="hm-footer-widget">
-                  <div class="hm-foot-title">
+              <div className=" col-md-3 col-sm-6  col-xs-12">
+                <div className="hm-footer-widget">
+                  <div className="hm-foot-title">
                     <h4>newsletter</h4>
                   </div>
-                  <div class="hm-foot-para">
+                  <div className="hm-foot-para">
                     <p>Subscribe to get latest news,update and information.</p>
                   </div>
-                  <div class="hm-foot-email">
-                    <div class="foot-email-box">
+                  <div className="hm-foot-email">
+                    <div className="foot-email-box">
                       <input
                         type="text"
-                        class="form-control"
+                        className="form-control"
                         placeholder="Enter Email Here...."
                       />
                     </div>
-                    <div class="foot-email-subscribe">
+                    <div className="foot-email-subscribe">
                       <span>
-                        <i class="fa fa-location-arrow"></i>
+                        <i className="fa fa-location-arrow"></i>
                       </span>
                     </div>
                   </div>

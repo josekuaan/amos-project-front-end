@@ -1,10 +1,15 @@
-import Index from "./component";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import ViewCart from "./pages/ViewCart";
+import Home from "./pages/Home";
 
 function App() {
   return (
-    <div className="App">
-      <Index />
-    </div>
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route path="/view-cart" element={<ViewCart />} />
+      </Routes>
+    </Router>
   );
 }
 

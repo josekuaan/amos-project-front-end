@@ -6,27 +6,27 @@ export default function Featured() {
 
   console.log(appContext);
   return (
-    <section id="feature" class="feature">
-      <div class="container">
-        <div class="section-header">
+    <section id="feature" className="feature">
+      <div className="container">
+        <div className="section-header">
           <h2>featured products</h2>
         </div>
-        <div class="feature-content">
-          <div class="row">
+        <div className="feature-content">
+          <div className="row">
             {appContext.featured.map((item, index) => (
-              <div class="col-sm-3" key={index}>
-                <div class="single-feature">
+              <div className="col-sm-3" key={index}>
+                <div className="single-feature">
                   <img src={item.file} alt="feature" />
-                  <div class="single-feature-txt text-center">
+                  <div className="single-feature-txt text-center">
                     <p>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <i class="fa fa-star"></i>
-                      <span class="spacial-feature-icon">
-                        <i class="fa fa-star"></i>
+                      <i className="fa fa-star"></i>
+                      <i className="fa fa-star"></i>
+                      <i className="fa fa-star"></i>
+                      <i className="fa fa-star"></i>
+                      <span className="spacial-feature-icon">
+                        <i className="fa fa-star"></i>
                       </span>
-                      <span class="feature-review">(45 review)</span>
+                      <span className="feature-review">(45 review)</span>
                     </p>
                     <h3>
                       <a href="#">dinning table </a>
@@ -37,19 +37,19 @@ export default function Featured() {
               </div>
             ))}
 
-            <div class="col-sm-3">
-              <div class="single-feature">
+            <div className="col-sm-3">
+              <div className="single-feature">
                 <img src="assets/images/f3.jpg" alt="feature image" />
-                <div class="single-feature-txt text-center">
+                <div className="single-feature-txt text-center">
                   <p>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <span class="spacial-feature-icon">
-                      <i class="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <span className="spacial-feature-icon">
+                      <i className="fa fa-star"></i>
                     </span>
-                    <span class="feature-review">(45 review)</span>
+                    <span className="feature-review">(45 review)</span>
                   </p>
                   <h3>
                     <a href="#">chair and table</a>
@@ -58,19 +58,19 @@ export default function Featured() {
                 </div>
               </div>
             </div>
-            <div class="col-sm-3">
-              <div class="single-feature">
+            <div className="col-sm-3">
+              <div className="single-feature">
                 <img src="assets/images/f4.jpg" alt="feature image" />
-                <div class="single-feature-txt text-center">
+                <div className="single-feature-txt text-center">
                   <p>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <span class="spacial-feature-icon">
-                      <i class="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <span className="spacial-feature-icon">
+                      <i className="fa fa-star"></i>
                     </span>
-                    <span class="feature-review">(45 review)</span>
+                    <span className="feature-review">(45 review)</span>
                   </p>
                   <h3>
                     <a href="#">modern arm chair</a>

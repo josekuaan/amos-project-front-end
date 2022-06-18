@@ -3,10 +3,10 @@ import React from "react";
 export default function Space() {
   return (
     <section id="sofa-collection">
-      <div class="owl-carousel owl-theme" id="collection-carousel">
-        <div class="sofa-collection collectionbg1">
-          <div class="container">
-            <div class="sofa-collection-txt">
+      <div className="owl-carousel owl-theme" id="collection-carousel">
+        <div className="sofa-collection collectionbg1">
+          <div className="container">
+            <div className="sofa-collection-txt">
               <h2>unlimited sofa collection</h2>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
@@ -14,23 +14,23 @@ export default function Space() {
                 enim ad minim veniam, quis nostrud exercitation ullamco laboris
                 nisi ut aliquip ex ea commodo consequat.
               </p>
-              <div class="sofa-collection-price">
+              <div className="sofa-collection-price">
                 <h4>
                   strting from <span>$ 199</span>
                 </h4>
               </div>
               <button
-                class="btn-cart welcome-add-cart sofa-collection-btn"
-                onclick="window.location.href='#'"
+                className="btn-cart welcome-add-cart sofa-collection-btn"
+                onClick={() => {}}
               >
                 view more
               </button>
             </div>
           </div>
         </div>
-        <div class="sofa-collection collectionbg2">
-          <div class="container">
-            <div class="sofa-collection-txt">
+        <div className="sofa-collection collectionbg2">
+          <div className="container">
+            <div className="sofa-collection-txt">
               <h2>unlimited dainning table collection</h2>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
@@ -38,14 +38,14 @@ export default function Space() {
                 enim ad minim veniam, quis nostrud exercitation ullamco laboris
                 nisi ut aliquip ex ea commodo consequat.
               </p>
-              <div class="sofa-collection-price">
+              <div className="sofa-collection-price">
                 <h4>
                   strting from <span>$ 299</span>
                 </h4>
               </div>
               <button
-                class="btn-cart welcome-add-cart sofa-collection-btn"
-                onclick="window.location.href='#'"
+                className="btn-cart welcome-add-cart sofa-collection-btn"
+                onClick={() => {}}
               >
                 view more
               </button>

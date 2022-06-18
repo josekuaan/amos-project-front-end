@@ -1,14 +1,15 @@
 import React, { useState, createContext, useEffect, Children } from "react";
 import axios from "axios";
 import Featured from "./component/Featured";
-import Index from "./component";
+import Home from "./pages/Home";
 
 const AppContext = createContext();
 
-const ProjectContext = () => {
+const ProjectContext = ({ children }) => {
   const [featured, setFeatured] = useState([]);
   const [newArrival, setNewArrival] = useState([]);
-  const [inventory, setInventory] = useState([]);
+  const [cart, setCart] = useState([]);
+  const [total, setTotal] = useState(0);
   const config = {
     headers: {
       "Access-Control-Allow-Origin": "*",
@@ -20,6 +21,8 @@ const ProjectContext = () => {
 
   useEffect(() => {
     getData();
+    let local = JSON.parse(localStorage.getItem("Kcart"));
+    setCart(local);
   }, []);
   const getData = async () => {
     try {
@@ -37,13 +40,67 @@ const ProjectContext = () => {
             var n = response.data.inventory.filter(
               (item) => item.type === "new"
             );
-            console.log(f);
-            console.log(n);
+
             setFeatured(f);
             setNewArrival(n);
           }
         });
     } catch (error) {}
+  };
+  const addToCart = (id) => {
+    let addCart = newArrival.filter((byId) => byId._id === id);
+    let localCart = JSON.parse(localStorage.getItem("Kcart"));
+    console.log(localCart);
+
+    if (localCart.length === 0 || localCart === null) {
+      localStorage.setItem(
+        "Kcart",
+        JSON.stringify(
+          localCart == null ? addCart : localCart.concat(...addCart)
+        )
+      );
+    } else {
+      for (var i = 0; i < localCart.length; i++) {
+        if (addCart[0]._id === localCart[i]._id) return;
+        localStorage.setItem(
+          "Kcart",
+          JSON.stringify(
+            localCart == null ? addCart : localCart.concat(...addCart)
+          )
+        );
+      }
+    }
+
+    // let newLocalCart = JSON.stringify(
+    //   localCart == null ? addCart : localCart.concat(...addCart)
+    // );
+    // console.log(newLocalCart);
+
+    console.log("local");
+    let local = JSON.parse(localStorage.getItem("Kcart"));
+    setCart(local);
+    calTotal(local);
+  };
+  const deleteItem = (id) => {
+    let deleteCart = JSON.parse(localStorage.getItem("Kcart"));
+    console.log(deleteCart);
+    let newCart = deleteCart.filter((byId) => byId._id !== id);
+    console.log(newCart);
+    localStorage.setItem("Kcart", JSON.stringify(newCart));
+    let local = JSON.parse(localStorage.getItem("Kcart"));
+    console.log(local);
+    setCart(local);
+    calTotal(local);
+  };
+
+  const calTotal = (local) => {
+    // console.log(cart);
+    if (local.length < 1) return;
+    let tot = local.map((a) => a.prize).reduce((a, b) => a + b);
+    console.log(tot);
+    setTotal(tot);
+
+    // cart.reduce((acc, curr) => ({ total: acc.prize + curr.prize }));
   };
 
   return (
@@ -51,9 +108,13 @@ const ProjectContext = () => {
       value={{
         featured,
         newArrival,
+        addToCart,
+        cart,
+        total,
+        deleteItem,
       }}
     >
-      <Index />
+      {children}
     </AppContext.Provider>
   );
 };

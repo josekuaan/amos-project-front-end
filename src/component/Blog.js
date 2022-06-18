@@ -2,20 +2,20 @@ import React from "react";
 
 export default function Blog() {
   return (
-    <section id="blog" class="blog">
-      <div class="container">
-        <div class="section-header">
+    <section id="blog" className="blog">
+      <div className="container">
+        <div className="section-header">
           <h2>latest blog</h2>
         </div>
-        <div class="blog-content">
-          <div class="row">
-            <div class="col-sm-4">
-              <div class="single-blog">
-                <div class="single-blog-img">
-                  <img src="assets/images/b1.jpg" alt="blog image" />
-                  <div class="single-blog-img-overlay"></div>
+        <div className="blog-content">
+          <div className="row">
+            <div className="col-sm-4">
+              <div className="single-blog">
+                <div className="single-blog-img">
+                  <img src="assets/images/b1.jpg" alt="blog" />
+                  <div className="single-blog-img-overlay"></div>
                 </div>
-                <div class="single-blog-txt">
+                <div className="single-blog-txt">
                   <h2>
                     <a href="#">Why Brands are Looking at Local Language</a>
                   </h2>
@@ -30,13 +30,13 @@ export default function Blog() {
                 </div>
               </div>
             </div>
-            <div class="col-sm-4">
-              <div class="single-blog">
-                <div class="single-blog-img">
-                  <img src="assets/images/b2.jpg" alt="blog image" />
-                  <div class="single-blog-img-overlay"></div>
+            <div className="col-sm-4">
+              <div className="single-blog">
+                <div className="single-blog-img">
+                  <img src="assets/images/b2.jpg" alt="blog" />
+                  <div className="single-blog-img-overlay"></div>
                 </div>
-                <div class="single-blog-txt">
+                <div className="single-blog-txt">
                   <h2>
                     <a href="#">Why Brands are Looking at Local Language</a>
                   </h2>
@@ -51,13 +51,13 @@ export default function Blog() {
                 </div>
               </div>
             </div>
-            <div class="col-sm-4">
-              <div class="single-blog">
-                <div class="single-blog-img">
-                  <img src="assets/images/b3.jpg" alt="blog image" />
-                  <div class="single-blog-img-overlay"></div>
+            <div className="col-sm-4">
+              <div className="single-blog">
+                <div className="single-blog-img">
+                  <img src="assets/images/b3.jpg" alt="blog" />
+                  <div className="single-blog-img-overlay"></div>
                 </div>
-                <div class="single-blog-txt">
+                <div className="single-blog-txt">
                   <h2>
                     <a href="#">Why Brands are Looking at Local Language</a>
                   </h2>
