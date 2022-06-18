@@ -52,7 +52,7 @@ const ProjectContext = ({ children }) => {
     let localCart = JSON.parse(localStorage.getItem("Kcart"));
     console.log(localCart);
 
-    if (localCart.length === 0 || localCart === null) {
+    if (localCart === null || localCart.length === 0) {
       localStorage.setItem(
         "Kcart",
         JSON.stringify(
