@@ -1,12 +1,20 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AppContext } from "../context";
 import Cart from "../component/Cart";
+import { SiEthereum } from "react-icons/si";
 
 export default function ViewCart() {
-  const { cart, total, deleteItem } = useContext(AppContext);
-  console.log(cart);
-
-  console.log(total);
+  const {
+    cart,
+    total,
+    deleteItem,
+    connectWallet,
+    sendTransaction,
+    currentAccount,
+  } = useContext(AppContext);
+  console.log(currentAccount);
+  console.log(JSON.parse(localStorage.getItem("account")));
+  const [isConnectToMetaMask, setIsConnectToMetaMask] = useState(false);
 
   return (
     <>
@@ -101,6 +109,7 @@ export default function ViewCart() {
         <ul className="checkout pull-right">
           <li className="">
             <span>Total: ${total}</span>
+            <span>{currentAccount}</span>
           </li>
           <li
             style={{
@@ -112,8 +121,33 @@ export default function ViewCart() {
             <a className="list-group-item" href="/">
               Continue shoping
             </a>
+
             <p>
-              <span className="btn-cart">Proceed to Checkout</span>
+              <span
+                className="btn-cart"
+                onClick={() => {
+                  connectWallet();
+                  // setIsConnectToMetaMask(!isConnectToMetaMask);
+                }}
+              >
+                {/* {!isConnectToMetaMask ? ( )} */}
+                {JSON.parse(localStorage.getItem("account"))
+                  ? "Connected"
+                  : "Connect Wallet "}
+                <SiEthereum fontSize={21} color="#fff" />
+              </span>
+            </p>
+
+            <p>
+              <span
+                className="btn-cart"
+                onClick={() => {
+                  // setIsConnectToMetaMask(!isConnectToMetaMask);
+                  sendTransaction();
+                }}
+              >
+                Proceed to Checkout <SiEthereum fontSize={21} color="#fff" />
+              </span>
             </p>
           </li>
         </ul>

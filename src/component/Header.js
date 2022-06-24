@@ -196,8 +196,8 @@ export default function Header() {
             data-speed={1000}
           >
             <div className="container">
-              <Cart />
-              <div className="navbar-header"></div>
+              {/* <div className="navbar-header"></div> */}
+
               <div
                 className="collapse navbar-collapse menu-ui-design"
                 id="navbar-menu"
@@ -228,6 +228,8 @@ export default function Header() {
                     <a href="#newsletter">contact</a>
                   </li>
                 </ul>
+
+                <Cart />
               </div>
             </div>
           </nav>

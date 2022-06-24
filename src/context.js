@@ -1,27 +1,167 @@
-import React, { useState, createContext, useEffect, Children } from "react";
+import React, { useState, createContext, useEffect } from "react";
 import axios from "axios";
-import Featured from "./component/Featured";
-import Home from "./pages/Home";
-
+import { ethers } from "ethers";
+import { contractAbi, contractAddress } from "./utils/constants";
+const { ethereum } = window;
 const AppContext = createContext();
+
+const getEthereumContract = () => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+  const signer = provider.getSigner();
+  const transactionContract = new ethers.Contract(
+    contractAddress,
+    contractAbi,
+    signer
+  );
+  return transactionContract;
+};
 
 const ProjectContext = ({ children }) => {
   const [featured, setFeatured] = useState([]);
   const [newArrival, setNewArrival] = useState([]);
   const [cart, setCart] = useState([]);
-  const [total, setTotal] = useState(0);
+  console.log(localStorage.getItem("total"));
+  const [total, setTotal] = useState(
+    JSON.parse(
+      localStorage.getItem("total") === "" ? 0 : localStorage.getItem("total")
+    )
+  );
+  const [formData, setFormData] = useState({
+    addressTo: "0xFAE11733125aFa5C87532569858618eb324cBd72",
+    amount: "",
+    message: "sold gloccery",
+    keyword: "checkout",
+  });
+  const [currentAccount, setCurrentAccount] = useState("hi");
+  const [user, setCurrentUser] = useState([]);
+  const [isLoading, setisLoading] = useState(false);
+  const [transactionCount, setTransactionCount] = useState(
+    localStorage.getItem("transactionCount")
+  );
+
+  const handleChange = (e, name) => {
+    setFormData((prevState) => ({ ...prevState, [name]: e.target.value }));
+  };
+
+  const checkIfWalletIsConnected = async () => {
+    try {
+      if (!ethereum) return alert("Please install metamask");
+
+      const accounts = await ethereum.request({ method: "eth_accounts" });
+
+      if (accounts.length > 0) {
+        setCurrentAccount(accounts[0]);
+      }
+
+      //getAllTransactions()
+    } catch (error) {
+      throw Error("No ethereum object.");
+    }
+  };
+
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, []);
+
+  const connectWallet = async () => {
+    try {
+      if (!ethereum) return alert("Please install metamask");
+      console.log("accounts");
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      console.log(accounts[0]);
+      localStorage.setItem("account", JSON.stringify(accounts[0]));
+      setCurrentAccount(accounts[0]);
+
+      console.log(accounts);
+    } catch (error) {
+      console.log(error);
+      throw Error("No ethereum object.");
+    }
+  };
+
+  const sendTransaction = async () => {
+    try {
+      if (!ethereum) return alert("Please install metamask");
+      const { addressTo, amount, keyword, message } = formData;
+      const transactionsContract = getEthereumContract();
+      console.log(transactionsContract);
+      if (total) {
+        const equivalence = await axios.get(
+          "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
+        );
+
+        console.log(equivalence.data.USD);
+
+        let convertCurrency = total / equivalence.data.USD;
+
+        const parsedAmount = ethers.utils.parseEther(
+          // convertCurrency.toString()
+          "0.005"
+        );
+        // const parsedAmount = ethers.utils.parseEther(amount);
+        console.log("total:", total);
+        console.log("convertCurrency:", convertCurrency);
+        console.log("parsedAmount:", parsedAmount);
+        console.log("addressTo:", addressTo);
+        console.log("currentAccount:", currentAccount);
+
+        await ethereum.request({
+          method: "eth_sendTransaction",
+          params: [
+            {
+              from: currentAccount,
+              to: addressTo,
+              gas: "0x5208", //21000 GWEI
+              value: parsedAmount._hex,
+            },
+          ],
+        });
+        console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+        console.log(currentAccount);
+        console.log(parsedAmount);
+        console.log(addressTo);
+        console.log(message);
+        console.log(keyword);
+        const transactionHash = await transactionsContract.addToblockchain(
+          addressTo,
+          0.005,
+          message,
+          keyword
+        );
+        console.log(transactionHash);
+        setisLoading(true);
+        console.log(`loading:${transactionHash.hash}`);
+
+        await transactionHash.wait();
+        setisLoading(false);
+        console.log(`success:${transactionHash.hash}`);
+
+        const transactionCoount =
+          await transactionsContract.getAllTransactions();
+        setTransactionCount(transactionCoount.toNumber());
+      }
+    } catch (error) {
+      console.log(error);
+      throw Error("No ethereum object.");
+    }
+  };
   const config = {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-      //   Authorization: `Bearer ${token}`,
+      // Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
   };
 
   useEffect(() => {
     getData();
-    let local = JSON.parse(localStorage.getItem("Kcart"));
+    let local = JSON.parse(
+      localStorage.getItem("Kcart") === "" ? [] : localStorage.getItem("Kcart")
+    );
     setCart(local);
   }, []);
   const getData = async () => {
@@ -49,16 +189,14 @@ const ProjectContext = ({ children }) => {
   };
   const addToCart = (id) => {
     let addCart = newArrival.filter((byId) => byId._id === id);
-    let localCart = JSON.parse(localStorage.getItem("Kcart"));
+    let localCart =
+      localStorage.getItem("Kcart") === ""
+        ? ""
+        : JSON.parse(localStorage.getItem("Kcart"));
     console.log(localCart);
 
-    if (localCart === null || localCart.length === 0) {
-      localStorage.setItem(
-        "Kcart",
-        JSON.stringify(
-          localCart == null ? addCart : localCart.concat(...addCart)
-        )
-      );
+    if (localCart === null || localCart === "" || localCart.length === 0) {
+      localStorage.setItem("Kcart", JSON.stringify(addCart));
     } else {
       for (var i = 0; i < localCart.length; i++) {
         if (addCart[0]._id === localCart[i]._id) return;
@@ -70,11 +208,6 @@ const ProjectContext = ({ children }) => {
         );
       }
     }
-
-    // let newLocalCart = JSON.stringify(
-    //   localCart == null ? addCart : localCart.concat(...addCart)
-    // );
-    // console.log(newLocalCart);
 
     console.log("local");
     let local = JSON.parse(localStorage.getItem("Kcart"));
@@ -98,9 +231,34 @@ const ProjectContext = ({ children }) => {
     if (local.length < 1) return;
     let tot = local.map((a) => a.prize).reduce((a, b) => a + b);
     console.log(tot);
-    setTotal(tot);
+    localStorage.setItem("total", JSON.stringify(tot));
+    // setTotal(tot);
 
     // cart.reduce((acc, curr) => ({ total: acc.prize + curr.prize }));
+  };
+
+  const logout = () => {
+    console.log("lllllllll");
+    try {
+      axios
+        .get(`http://localhost:5000/api/user/auth/logout`, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+            Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then(function (response) {
+          if (response.data.success) {
+            window.localStorage.clear("userId");
+            window.localStorage.clear("loggedIn");
+            window.localStorage.clear("token");
+            localStorage.clear("total");
+            localStorage.clear("Kcart");
+          }
+        });
+    } catch (error) {}
   };
 
   return (
@@ -112,6 +270,9 @@ const ProjectContext = ({ children }) => {
         cart,
         total,
         deleteItem,
+        logout,
+        connectWallet,
+        sendTransaction,
       }}
     >
       {children}
@@ -119,27 +280,3 @@ const ProjectContext = ({ children }) => {
   );
 };
 export { ProjectContext, AppContext };
-
-// {appContext.featured.map((item, index) => (
-//   <div class="col-sm-3" key={index}>
-//     <div class="single-feature">
-//       <img src={item.file} alt="feature" />
-//       <div class="single-feature-txt text-center">
-//         <p>
-//           <i class="fa fa-star"></i>
-//           <i class="fa fa-star"></i>
-//           <i class="fa fa-star"></i>
-//           <i class="fa fa-star"></i>
-//           <span class="spacial-feature-icon">
-//             <i class="fa fa-star"></i>
-//           </span>
-//           <span class="feature-review">(45 review)</span>
-//         </p>
-//         <h3>
-//           <a href="#">dinning table </a>
-//         </h3>
-//         <h5>${item.prize}</h5>
-//       </div>
-//     </div>
-//   </div>
-// ))}

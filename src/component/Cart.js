@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from "react";
 import { AppContext } from "../context";
 
 export default function Cart() {
-  const { cart, total, deleteItem } = useContext(AppContext);
+  const { cart, total, deleteItem, logout } = useContext(AppContext);
 
   // let cart = JSON.parse(localStorage.getItem("Kcart"));
   console.log("==============cart=====", cart);
@@ -10,13 +10,23 @@ export default function Cart() {
   // console.log("===================");
 
   return (
-    <div className="attr-nav">
+    <div className="attr-nav" style={{ display: "flex" }}>
+      {localStorage.getItem("userId") ? (
+        <a href="/" onClick={logout} style={{ marginTop: "43px" }}>
+          Logout
+        </a>
+      ) : (
+        <a href="/login" style={{ marginTop: "43px" }}>
+          Login
+        </a>
+      )}
       <ul>
         <li className="dropdown">
           <a href="#" className="dropdown-toggle" data-toggle="dropdown">
             <span className="lnr lnr-cart" />
             <span className="badge badge-bg-1">{cart?.length}</span>
           </a>
+          {/* <a href="/login">Login</a> */}
           <ul className="dropdown-menu cart-list s-cate">
             {cart?.map((item, index) => (
               <li className="single-cart-list" key={index}>
@@ -46,7 +56,12 @@ export default function Cart() {
               ) : (
                 <div>
                   <span>Total: ${total}.00</span>
-                  <a className="btn-cart pull-right" href="/view-cart">
+                  <a
+                    className="btn-cart pull-right"
+                    href={
+                      localStorage.getItem("userId") ? "/view-cart" : "/login"
+                    }
+                  >
                     view cart
                   </a>
                 </div>

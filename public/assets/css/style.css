@@ -950,7 +950,7 @@ margin-bottom: 0px!important;
     margin-top:16px;
 }
 .checkout{
-    width: 46%;
+    width: 60%;
     padding: 10px 54px!important;
     cursor: pointer;
 }
@@ -961,4 +961,37 @@ margin-bottom: 0px!important;
     max-width:50%
 }
   
+.login-btn{
+    background-color: #3454D0;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    width: 100%;
+    border-radius: 10px;
+    font-weight: 500;
+}
+.error {
+    display: inline-block;
+    background-color: rgb(206 81 81 / 9%);
+    color: #ff000085;
+  }
+  .hide {
+    display: none;
+  }
+  .login-message {
+    padding: 10px;
+    border-radius: 3px;
+    width: 100%;
+    margin: auto;
+  
+    text-align: center;
+    font-size: 14px;
+  }
+
+.err{
+    color: red;
+
+}
+    .scroll:nth-of-type(5) {flex-grow: 5!important;}
+
 /*========================Thank you=================

@@ -36,7 +36,7 @@ export default function NewArrival() {
                   <h4>
                     <a href="#">{item.title}</a>
                   </h4>
-                  <p className="arrival-product-price">${item.prize}</p>
+                  <p className="arrival-product-price">${item.prize}.00</p>
                 </div>
               </div>
             ))}
