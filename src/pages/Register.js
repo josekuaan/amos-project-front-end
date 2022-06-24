@@ -26,7 +26,7 @@ export default function Register() {
     };
 
     axios
-      .post(`http://localhost:5000/api/user/auth/register`, data, config)
+      .post(`${base_url}/api/user/auth/register`, data, config)
       .then(function (response) {
         console.log(response.data);
         if (response.data.success) {

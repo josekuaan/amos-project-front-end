@@ -25,7 +25,7 @@ export default function Login() {
       },
     };
     axios
-      .post(`http://localhost:5000/api/user/auth/login`, data, config)
+      .post(`${base_url}/api/user/auth/login`, data, config)
       .then(function (response) {
         if (response.data.success) {
           console.log("here");

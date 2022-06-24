@@ -1,7 +1,8 @@
 import React, { useState, createContext, useEffect } from "react";
 import axios from "axios";
 import { ethers } from "ethers";
-import { contractAbi, contractAddress } from "./utils/constants";
+import { contractAbi, contractAddress, base_url } from "./utils/constants";
+
 const { ethereum } = window;
 const AppContext = createContext();
 
@@ -167,10 +168,7 @@ const ProjectContext = ({ children }) => {
   const getData = async () => {
     try {
       axios
-        .get(
-          `https://amos-project.herokuapp.com/api/inventory/get-inventories`,
-          config
-        )
+        .get(`${base_url}/api/inventory/get-inventories`, config)
         .then(function (response) {
           console.log(response.data.inventory);
           if (response.data.success) {
@@ -209,7 +207,6 @@ const ProjectContext = ({ children }) => {
       }
     }
 
-    console.log("local");
     let local = JSON.parse(localStorage.getItem("Kcart"));
     setCart(local);
     calTotal(local);
@@ -238,10 +235,9 @@ const ProjectContext = ({ children }) => {
   };
 
   const logout = () => {
-    console.log("lllllllll");
     try {
       axios
-        .get(`http://localhost:5000/api/user/auth/logout`, {
+        .get(`${base_url}/api/user/auth/logout`, {
           headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
