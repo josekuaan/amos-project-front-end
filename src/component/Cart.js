@@ -4,11 +4,6 @@ import { AppContext } from "../context";
 export default function Cart() {
   const { cart, total, deleteItem, logout } = useContext(AppContext);
 
-  // let cart = JSON.parse(localStorage.getItem("Kcart"));
-  console.log("==============cart=====", cart);
-  // console.log();
-  // console.log("===================");
-
   return (
     <div className="attr-nav" style={{ display: "flex" }}>
       {localStorage.getItem("userId") ? (

@@ -2,6 +2,7 @@ import React, { useState, createContext, useEffect } from "react";
 import axios from "axios";
 import { ethers } from "ethers";
 import { contractAbi, contractAddress, base_url } from "./utils/constants";
+import { SiOpenaccess } from "react-icons/si";
 
 const { ethereum } = window;
 const AppContext = createContext();
@@ -34,22 +35,26 @@ const ProjectContext = ({ children }) => {
     message: "sold gloccery",
     keyword: "checkout",
   });
-  const [currentAccount, setCurrentAccount] = useState("hi");
+  const [currentAccount, setCurrentAccount] = useState("");
   const [user, setCurrentUser] = useState([]);
+  const [connected, setConnected] = useState(true);
+  const [val, setValue] = useState(1);
   const [isLoading, setisLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [convertedCurrency, setConvertedCurrency] = useState(
+    JSON.parse(localStorage.getItem("convertCurrency"))
+  );
   const [transactionCount, setTransactionCount] = useState(
     localStorage.getItem("transactionCount")
   );
-
-  const handleChange = (e, name) => {
-    setFormData((prevState) => ({ ...prevState, [name]: e.target.value }));
-  };
 
   const checkIfWalletIsConnected = async () => {
     try {
       if (!ethereum) return alert("Please install metamask");
 
       const accounts = await ethereum.request({ method: "eth_accounts" });
+
+      console.log(accounts);
 
       if (accounts.length > 0) {
         setCurrentAccount(accounts[0]);
@@ -75,6 +80,7 @@ const ProjectContext = ({ children }) => {
       console.log(accounts[0]);
       localStorage.setItem("account", JSON.stringify(accounts[0]));
       setCurrentAccount(accounts[0]);
+      setConnected(!connected);
 
       console.log(accounts);
     } catch (error) {
@@ -83,72 +89,77 @@ const ProjectContext = ({ children }) => {
     }
   };
 
+  const disConnectWallet = async () => {
+    // window.ethereum.clearCachedProvider();
+    // await window.ethereum.request({
+    //   method: "wallet_requestPermissions",
+    //   params: [
+    //     {
+    //       eth_accounts: { from: currentAccount },
+    //     },
+    //   ],
+    // });
+    console.log("disconnect");
+    setConnected(!connected);
+  };
+
   const sendTransaction = async () => {
     try {
+      let sales = JSON.parse(localStorage.getItem("Kcart"));
+
       if (!ethereum) return alert("Please install metamask");
-      const { addressTo, amount, keyword, message } = formData;
-      const transactionsContract = getEthereumContract();
-      console.log(transactionsContract);
-      if (total) {
-        const equivalence = await axios.get(
-          "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
-        );
 
-        console.log(equivalence.data.USD);
-
-        let convertCurrency = total / equivalence.data.USD;
-
-        const parsedAmount = ethers.utils.parseEther(
-          // convertCurrency.toString()
-          "0.005"
-        );
-        // const parsedAmount = ethers.utils.parseEther(amount);
-        console.log("total:", total);
-        console.log("convertCurrency:", convertCurrency);
-        console.log("parsedAmount:", parsedAmount);
-        console.log("addressTo:", addressTo);
-        console.log("currentAccount:", currentAccount);
-
-        await ethereum.request({
-          method: "eth_sendTransaction",
-          params: [
-            {
-              from: currentAccount,
-              to: addressTo,
-              gas: "0x5208", //21000 GWEI
-              value: parsedAmount._hex,
-            },
-          ],
-        });
-        console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+      if (currentAccount === "") {
+        return setConnected(false);
+      } else {
+        setConnected(true);
         console.log(currentAccount);
-        console.log(parsedAmount);
-        console.log(addressTo);
-        console.log(message);
-        console.log(keyword);
-        const transactionHash = await transactionsContract.addToblockchain(
-          addressTo,
-          0.005,
-          message,
-          keyword
-        );
-        console.log(transactionHash);
-        setisLoading(true);
-        console.log(`loading:${transactionHash.hash}`);
+        const { addressTo, amount, keyword, message } = formData;
 
-        await transactionHash.wait();
-        setisLoading(false);
-        console.log(`success:${transactionHash.hash}`);
+        const transactionsContract = getEthereumContract();
+        console.log(transactionsContract);
+        if (total) {
+          const equivalence = await axios.get(
+            "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
+          );
 
-        const transactionCoount =
-          await transactionsContract.getAllTransactions();
-        setTransactionCount(transactionCoount.toNumber());
+          console.log(equivalence.data.USD);
+
+          let convertCurrency = total / equivalence.data.USD;
+
+          const parsedAmount = ethers.utils.parseEther(
+            // convertCurrency.toString()
+            "0.005"
+          );
+
+          await ethereum.request({
+            method: "eth_sendTransaction",
+            params: [
+              {
+                from: currentAccount,
+                to: addressTo,
+                gas: "0x5208", //21000 GWEI
+                value: parsedAmount._hex,
+              },
+            ],
+          });
+
+          const transactionHash = await transactionsContract.addToblockchain(
+            addressTo,
+            parsedAmount._hex,
+            message,
+            keyword
+          );
+
+          return transactionHash;
+        }
       }
     } catch (error) {
       console.log(error);
       throw Error("No ethereum object.");
     }
   };
+
   const config = {
     headers: {
       "Access-Control-Allow-Origin": "*",
@@ -185,26 +196,115 @@ const ProjectContext = ({ children }) => {
         });
     } catch (error) {}
   };
+  const checkout = () => {
+    let sales = JSON.parse(localStorage.getItem("Kcart"));
+
+    sales = JSON.stringify(sales);
+    console.log(sales);
+    axios({
+      method: "post",
+      url: `http://localhost:5000/api/inventory/checkout`,
+      sales,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then(function (response) {
+        if (response.data.success) {
+          console.log(response.data);
+        }
+        // else {
+        //   setErr(response.data.msg);
+        //   setTimeout(() => {
+        //     setErr("");
+        //     setLoading(false);
+        //   }, 6000);
+        // }
+      })
+      .catch((e) => {
+        console.log(e.response);
+        // Swal({
+        //   title: "Sorry!",
+        //   text: e.response.data.msg,
+        //   icon: "error",
+        // });
+        // setLoading(false);
+      });
+  };
+  const handleChange = (e, id) => {
+    let val = e.target.value;
+
+    var tempArray = [];
+    var obj = {};
+    let localCart = JSON.parse(localStorage.getItem("Kcart"));
+    for (var j = 0; j < localCart.length; j++) {
+      if (id === localCart[j]._id) {
+        obj["prize"] = localCart[j].prize;
+        obj["qty"] = val;
+        obj["totalPrize"] = localCart[j].prize * val;
+        obj["_id"] = localCart[j]._id;
+        obj["title"] = localCart[j].title;
+        obj["type"] = localCart[j].type;
+        obj["file"] = localCart[j].file;
+        tempArray.push(obj);
+      }
+    }
+
+    let finalArray = localCart.map(
+      (item) => tempArray.find((o) => o._id === item._id) || item
+    );
+
+    localStorage.setItem("Kcart", JSON.stringify(finalArray));
+    calTotal(finalArray);
+    // localCart.concat(...finalArray)
+  };
   const addToCart = (id) => {
+    var tempArray = [];
+    var obj = {};
     let addCart = newArrival.filter((byId) => byId._id === id);
     let localCart =
       localStorage.getItem("Kcart") === ""
         ? ""
         : JSON.parse(localStorage.getItem("Kcart"));
-    console.log(localCart);
 
     if (localCart === null || localCart === "" || localCart.length === 0) {
-      localStorage.setItem("Kcart", JSON.stringify(addCart));
-    } else {
-      for (var i = 0; i < localCart.length; i++) {
-        if (addCart[0]._id === localCart[i]._id) return;
-        localStorage.setItem(
-          "Kcart",
-          JSON.stringify(
-            localCart == null ? addCart : localCart.concat(...addCart)
-          )
-        );
+      for (var i = 0; i < addCart.length; i++) {
+        obj["prize"] = addCart[i].prize;
+        obj["qty"] = i + 1;
+        obj["totalPrize"] = addCart[i].prize;
+        obj["_id"] = addCart[i]._id;
+        obj["title"] = addCart[i].title;
+        obj["type"] = addCart[i].type;
+        obj["file"] = addCart[i].file;
+        tempArray.push(obj);
       }
+
+      localStorage.setItem("Kcart", JSON.stringify(tempArray));
+    } else {
+      console.log(localCart);
+      console.log(addCart);
+      for (var j = 0; j < localCart.length; j++) {
+        if (localCart[j]._id === id) return;
+
+        if (addCart[0]._id === id) {
+          console.log(addCart[j]);
+          obj["prize"] = addCart[0].prize;
+          obj["qty"] = j + 1;
+          obj["totalPrize"] = addCart[0].prize;
+          obj["_id"] = id;
+          obj["title"] = addCart[0].title;
+          obj["type"] = addCart[0].type;
+          obj["file"] = addCart[0].file;
+          tempArray = obj;
+        }
+      }
+      localStorage.setItem(
+        "Kcart",
+        JSON.stringify(localCart == null ? tempArray : localCart.concat(obj))
+      );
     }
 
     let local = JSON.parse(localStorage.getItem("Kcart"));
@@ -223,15 +323,28 @@ const ProjectContext = ({ children }) => {
     calTotal(local);
   };
 
-  const calTotal = (local) => {
-    // console.log(cart);
-    if (local.length < 1) return;
-    let tot = local.map((a) => a.prize).reduce((a, b) => a + b);
+  const calTotal = async (local) => {
+    if (local.length < 1) {
+      localStorage.setItem("total", JSON.stringify(0.0));
+      localStorage.setItem("convertCurrency", JSON.stringify(0.0));
+      return;
+    }
+    let tot = local.map((a) => a.totalPrize).reduce((a, b) => a + b);
+    const equivalence = await axios.get(
+      "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD"
+    );
+
+    console.log(equivalence.data.USD);
+
+    let convertCurrency = total / equivalence.data.USD;
     console.log(tot);
     localStorage.setItem("total", JSON.stringify(tot));
-    // setTotal(tot);
-
-    // cart.reduce((acc, curr) => ({ total: acc.prize + curr.prize }));
+    localStorage.setItem(
+      "convertCurrency",
+      JSON.stringify(convertCurrency.toFixed(5))
+    );
+    setConvertedCurrency(convertCurrency);
+    setTotal(tot);
   };
 
   const logout = () => {
@@ -265,10 +378,18 @@ const ProjectContext = ({ children }) => {
         addToCart,
         cart,
         total,
+        convertedCurrency,
+        val,
         deleteItem,
         logout,
+        checkout,
         connectWallet,
+        disConnectWallet,
         sendTransaction,
+        connected,
+        setConnected,
+        success,
+        handleChange,
       }}
     >
       {children}

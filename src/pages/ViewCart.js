@@ -2,22 +2,57 @@ import React, { useEffect, useState, useContext } from "react";
 import { AppContext } from "../context";
 import Cart from "../component/Cart";
 import { SiEthereum } from "react-icons/si";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function ViewCart() {
+  const history = useNavigate();
   const {
     cart,
     total,
     deleteItem,
     connectWallet,
+    disConnectWallet,
     sendTransaction,
-    currentAccount,
+    connected,
+    setConnected,
+    convertedCurrency,
+    handleChange,
+    checkout,
   } = useContext(AppContext);
-  console.log(currentAccount);
-  console.log(JSON.parse(localStorage.getItem("account")));
-  const [isConnectToMetaMask, setIsConnectToMetaMask] = useState(false);
+
+  const successAlert = () => {
+    let timerInterval;
+    Swal.fire({
+      title: "Success!",
+      html: "Loading...<b></b>.",
+      timer: 20000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+        const b = Swal.getHtmlContainer().querySelector("b");
+        timerInterval = setInterval(() => {
+          b.textContent = Swal.getTimerLeft();
+        }, 100);
+      },
+
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    }).then((result) => {
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log("I was closed by the timer");
+      }
+    });
+    // return history("/");
+  };
 
   return (
     <>
+      <ToastContainer />
       <div className="top-area">
         <div className="">
           <nav
@@ -92,6 +127,9 @@ export default function ViewCart() {
                     type="number"
                     className="form-control"
                     id="basic-url"
+                    min="1"
+                    max="5"
+                    onChange={(e) => handleChange(e, item._id)}
                   />
                 </h6>
               </div>
@@ -107,9 +145,12 @@ export default function ViewCart() {
           </ul>
         ))}
         <ul className="checkout pull-right">
-          <li className="">
+          <li
+            className=""
+            style={{ display: "flex", justifyContent: "space-between" }}
+          >
             <span>Total: ${total}</span>
-            <span>{currentAccount}</span>
+            <span>{convertedCurrency} ETH</span>
           </li>
           <li
             style={{
@@ -123,27 +164,80 @@ export default function ViewCart() {
             </a>
 
             <p>
-              <span
-                className="btn-cart"
-                onClick={() => {
-                  connectWallet();
-                  // setIsConnectToMetaMask(!isConnectToMetaMask);
-                }}
-              >
-                {/* {!isConnectToMetaMask ? ( )} */}
-                {JSON.parse(localStorage.getItem("account"))
-                  ? "Connected"
-                  : "Connect Wallet "}
-                <SiEthereum fontSize={21} color="#fff" />
-              </span>
+              {connected ? (
+                <span
+                  className="btn-cart"
+                  onClick={() => {
+                    disConnectWallet();
+
+                    // setIsConnectToMetaMask(!isConnectToMetaMask);
+                    if (connected) {
+                      return toast("Wallet Connected!", {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                      });
+                    }
+                  }}
+                >
+                  Connected
+                  <SiEthereum fontSize={21} color="#fff" />
+                </span>
+              ) : (
+                <span
+                  className="btn-cart"
+                  onClick={() => {
+                    connectWallet();
+
+                    // setIsConnectToMetaMask(!isConnectToMetaMask);
+                    if (connected) {
+                      return toast("Wallet Connected!", {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                      });
+                    }
+                  }}
+                >
+                  {/* {!isConnectToMetaMask ? ( )} */}
+                  Connect Wallet
+                  <SiEthereum fontSize={21} color="#fff" />
+                </span>
+              )}
             </p>
 
             <p>
               <span
                 className="btn-cart"
-                onClick={() => {
+                onClick={async () => {
                   // setIsConnectToMetaMask(!isConnectToMetaMask);
-                  sendTransaction();
+
+                  if (connected === false) {
+                    console.log(connected);
+                    return toast.error("Please Connect Wallet!", {
+                      position: "top-right",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    });
+                  } else {
+                    let res = await sendTransaction();
+                    if (res) {
+                      successAlert();
+                      checkout();
+                    }
+                  }
                 }}
               >
                 Proceed to Checkout <SiEthereum fontSize={21} color="#fff" />

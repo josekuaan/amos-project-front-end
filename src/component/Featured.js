@@ -29,7 +29,7 @@ export default function Featured() {
                       <span className="feature-review">(45 review)</span>
                     </p>
                     <h3>
-                      <a href="#">dinning table </a>
+                      <a href="#">{item.title} </a>
                     </h3>
                     <h5>${item.prize}.00</h5>
                   </div>
