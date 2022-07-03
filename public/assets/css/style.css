@@ -960,7 +960,24 @@ margin-bottom: 0px!important;
 .image-display{
     max-width:50%
 }
-  
+  .success{
+    /* margin: 40px 0px; */
+    width: 600px;
+    /* background-color: #a09e9c; */
+    padding: 10%;
+    
+  }
+  .success >h1{
+    padding: 4rem 0;
+  }
+  .checkout-icon{
+    text-align: center;
+    padding: 1rem;
+  }
+  .lnr-checkmark-circle{
+    font-size: 60px;
+    color: #2FBA77;
+  }
 .login-btn{
     background-color: #3454D0;
     color: white;

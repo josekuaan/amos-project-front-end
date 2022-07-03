@@ -6,9 +6,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default function ViewCart() {
   const history = useNavigate();
+  const [response, setResponse] = useState(true);
   const {
     cart,
     total,
@@ -18,36 +20,77 @@ export default function ViewCart() {
     sendTransaction,
     connected,
     setConnected,
+    success,
     convertedCurrency,
     handleChange,
-    checkout,
   } = useContext(AppContext);
 
-  const successAlert = () => {
-    let timerInterval;
-    Swal.fire({
-      title: "Success!",
-      html: "Loading...<b></b>.",
-      timer: 20000,
-      timerProgressBar: true,
-      didOpen: () => {
-        Swal.showLoading();
-        const b = Swal.getHtmlContainer().querySelector("b");
-        timerInterval = setInterval(() => {
-          b.textContent = Swal.getTimerLeft();
-        }, 100);
-      },
+  console.log(connected);
+  console.log(success);
+  const checkout = () => {
+    setResponse(true);
+    let sales = JSON.parse(localStorage.getItem("Kcart"));
+    console.log(response);
+    if (response) {
+      console.log("ooooooooooooooooo");
+      let timerInterval;
+      Swal.fire({
+        title: "Success!",
+        html: "Loading...<b></b>.",
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+          const b = Swal.getHtmlContainer().querySelector("b");
+          timerInterval = setInterval(() => {
+            b.textContent = Swal.getTimerLeft();
+          }, 100);
+        },
 
-      willClose: () => {
-        clearInterval(timerInterval);
+        willClose: () => {
+          clearInterval(timerInterval);
+        },
+      }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+          console.log("I was closed by the timer");
+          history("/success");
+        }
+      });
+    }
+
+    var data = { sales: sales };
+    console.log(data);
+    axios({
+      method: "post",
+      url: `http://localhost:5000/api/inventory/checkout`,
+      data,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
       },
-    }).then((result) => {
-      /* Read more about handling dismissals below */
-      if (result.dismiss === Swal.DismissReason.timer) {
-        console.log("I was closed by the timer");
-      }
-    });
-    // return history("/");
+    })
+      .then(function (res) {
+        if (res.data.success) {
+          localStorage.clear("total");
+          localStorage.clear("Kcart");
+          localStorage.clear("convertCurrency");
+          localStorage.clear("qty");
+          setTimeout(() => {
+            setResponse(false);
+          }, 6000);
+        }
+      })
+      .catch((e) => {
+        Swal({
+          title: "Sorry!",
+          text: e.response.data.msg,
+          icon: "error",
+        });
+        // setLoading(false);
+      });
   };
 
   return (
@@ -85,13 +128,13 @@ export default function ViewCart() {
                     <a href="#new-arrivals">new arrival</a>
                   </li>
                   <li className="scroll">
-                    <a href="#feature">features</a>
+                    <a href="/">features</a>
                   </li>
                   <li className="scroll">
-                    <a href="#blog">blog</a>
+                    <a href="/">blog</a>
                   </li>
                   <li className="scroll">
-                    <a href="#newsletter">contact</a>
+                    <a href="/">contact</a>
                   </li>
                 </ul>
               </div>
@@ -234,7 +277,6 @@ export default function ViewCart() {
                   } else {
                     let res = await sendTransaction();
                     if (res) {
-                      successAlert();
                       checkout();
                     }
                   }

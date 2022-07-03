@@ -150,7 +150,7 @@ const ProjectContext = ({ children }) => {
             message,
             keyword
           );
-
+          console.log(transactionHash);
           return transactionHash;
         }
       }
@@ -196,44 +196,7 @@ const ProjectContext = ({ children }) => {
         });
     } catch (error) {}
   };
-  const checkout = () => {
-    let sales = JSON.parse(localStorage.getItem("Kcart"));
 
-    sales = JSON.stringify(sales);
-    console.log(sales);
-    axios({
-      method: "post",
-      url: `http://localhost:5000/api/inventory/checkout`,
-      sales,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-        Authorization: `Bearer ${window.localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    })
-      .then(function (response) {
-        if (response.data.success) {
-          console.log(response.data);
-        }
-        // else {
-        //   setErr(response.data.msg);
-        //   setTimeout(() => {
-        //     setErr("");
-        //     setLoading(false);
-        //   }, 6000);
-        // }
-      })
-      .catch((e) => {
-        console.log(e.response);
-        // Swal({
-        //   title: "Sorry!",
-        //   text: e.response.data.msg,
-        //   icon: "error",
-        // });
-        // setLoading(false);
-      });
-  };
   const handleChange = (e, id) => {
     let val = e.target.value;
 
@@ -365,6 +328,8 @@ const ProjectContext = ({ children }) => {
             window.localStorage.clear("token");
             localStorage.clear("total");
             localStorage.clear("Kcart");
+            localStorage.clear("qty");
+            localStorage.clear("convertCurrency");
           }
         });
     } catch (error) {}
@@ -382,7 +347,7 @@ const ProjectContext = ({ children }) => {
         val,
         deleteItem,
         logout,
-        checkout,
+
         connectWallet,
         disConnectWallet,
         sendTransaction,

@@ -46,7 +46,7 @@ export default function Cart() {
             ))}
 
             <li className="total">
-              {cart?.length === 0 ? (
+              {cart?.length === 0 || cart === null ? (
                 ""
               ) : (
                 <div>
